@@ -57,7 +57,12 @@ CREATE TABLE User (
 CREATE TABLE Bid (
     bidID SERIAL PRIMARY KEY,
     bidAmount INTEGER NOT NULL,
-    bidTimestamp TIMESTAMP NOT NULL
+    bidTimestamp TIMESTAMP NOT NULL,
+    -- Relationships below --
+    -- Auction receives Bids
+    FOREIGN KEY (auctionID) REFERENCES Auction(auctionID),
+    -- User places Bid
+    FOREIGN KEY (userLogin) REFERENCES User(userLogin)
 );
 
 CREATE TABLE Auction(
