@@ -1,86 +1,95 @@
--- Note for the following
--- if the name is different, it may interfere with PSQL syntax
--- Requires Foreign Keys added and Relationships
+-- Auction app schema with role-based business constraints.
 
--- Entities
+-- Drop old objects when re-running this script.
+DROP TABLE IF EXISTS Bid CASCADE;
+DROP TABLE IF EXISTS Auction CASCADE;
+DROP TABLE IF EXISTS Shipment CASCADE;
+DROP TABLE IF EXISTS Item CASCADE;
+DROP TABLE IF EXISTS Payment CASCADE;
+DROP TABLE IF EXISTS "User" CASCADE;
+
+CREATE TABLE "User" (
+    userLogin SERIAL PRIMARY KEY,
+    phoneNum BIGINT NOT NULL,
+    userPassword VARCHAR(255) NOT NULL,
+    userRole VARCHAR(20) NOT NULL,
+    userAddress VARCHAR(255) NOT NULL,
+    favoriteCategory VARCHAR(255),
+    
+    CONSTRAINT user_role_check CHECK (userRole IN ('Buyer', 'Seller', 'Admin')),
+
+    CONSTRAINT user_login_role_uq UNIQUE (userLogin, userRole)
+);
+
+CREATE TABLE Payment (
+    paymentID SERIAL PRIMARY KEY,
+    amount INTEGER NOT NULL,
+    paymentStatus VARCHAR(255) NOT NULL,
+    payerUserLogin INTEGER NOT NULL,
+    payerRole VARCHAR(20) DEFAULT 'Buyer' CHECK (payerRole = 'Buyer'),
+
+    CONSTRAINT payment_user_fk
+        FOREIGN KEY (payerUserLogin, payerRole) REFERENCES "User"(userLogin, userRole)
+);
+
 CREATE TABLE Item (
     itemID SERIAL PRIMARY KEY,
-    itemName CHAR(255) NOT NULL,
-    category CHAR(255) NOT NULL,
+    itemName VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
     startingPrice INTEGER NOT NULL,
-    imageURL CHAR(255),
-    condition CHAR(50),
-    itemDescription CHAR(255),
-    -- Relationships below --
-    -- Item is listed in Auction
-    FOREIGN KEY (auctionID) REFERENCES Auction(auctionID)
-    -- User Manages Item, constraint role = Seller
+    imageURL VARCHAR(255),
+    condition VARCHAR(50),
+    itemDescription VARCHAR(255),
+
+    managerUserLogin INTEGER NOT NULL,
+    managerRole VARCHAR(20) DEFAULT 'Seller' CHECK (managerRole = 'Seller'),
+
+    CONSTRAINT item_manager_fk
+        FOREIGN KEY (managerUserLogin, managerRole) REFERENCES "User"(userLogin, userRole)
 );
 
 CREATE TABLE Shipment (
-    ShipmentID SERIAL PRIMARY KEY,
-    shipmentAddress CHAR(255) NOT NULL, 
-    shipmentStatus CHAR(255) NOT NULL,
-    trackingNumber INTEGER,
-    -- Relationships below --
-    -- Shipment is for Auction
-    FOREIGN KEY (auctionID) REFERENCES Auction(auctionID)
+    shipmentID SERIAL PRIMARY KEY,
+    shipmentAddress VARCHAR(255) NOT NULL,
+    shipmentStatus VARCHAR(255) NOT NULL,
+    trackingNumber VARCHAR(100)
 );
 
-CREATE TABLE Payment(
-    paymentID SERIAL PRIMARY KEY,
-    amount INTEGER NOT NULL,
-    paymentStatus CHAR(255) NOT NULL
-);
+CREATE TABLE Auction (
+    auctionID SERIAL PRIMARY KEY,
+    auctionStatus VARCHAR(255) NOT NULL,
+    currentHighestBid INTEGER NOT NULL,
+    shipmentID INTEGER,
+    itemID INTEGER NOT NULL,
+    paymentID INTEGER,
+    winningUserLogin INTEGER,
 
-CREATE TABLE User (
-    userLogin SERIAL PRIMARY KEY,
-    phoneNum INTEGER NOT NULL,
-    userPassword CHAR(255) NOT NULL,
-    userRole CHAR(255) NOT NULL,
-    userAddress CHAR(255) NOT NULL,
-    favoriteCategory CHAR(255),
-
-    -- Relationships below --
-    -- User Manages Item, TODO: constraint role = Seller
-    FOREIGN KEY (managedItemID) REFERENCES Item(itemID),
-    -- User makes Payment
-    FOREIGN KEY (paymentID) REFERENCES Payment(paymentID),
-    -- User Wins Auction
-    FOREIGN KEY (winningAuctionID) REFERENCES Auction(auctionID),
-    -- User Create Auction
-    FOREIGN KEY (createdAuctionID) REFERENCES Auction(auctionID),
-    -- User places Bids
-    FOREIGN KEY (bidID) REFERENCES Bid(bidID)
+    creatorUserLogin INTEGER NOT NULL,
+    CONSTRAINT auction_shipment_fk
+        FOREIGN KEY (shipmentID) REFERENCES Shipment(shipmentID),
+    CONSTRAINT auction_item_fk
+        FOREIGN KEY (itemID) REFERENCES Item(itemID),
+    CONSTRAINT auction_payment_fk 
+        FOREIGN KEY (paymentID) REFERENCES Payment(paymentID),
+    CONSTRAINT auction_winner_fk
+        FOREIGN KEY (winningUserLogin) REFERENCES "User"(userLogin)
+    -- Creator must be a seller
+    CONSTRAINT auction_creator_fk
+        FOREIGN KEY (creatorUserLogin, creatorRole) REFERENCES "User"(userLogin, userRole)
 );
 
 CREATE TABLE Bid (
     bidID SERIAL PRIMARY KEY,
     bidAmount INTEGER NOT NULL,
     bidTimestamp TIMESTAMP NOT NULL,
-    -- Relationships below --
-    -- Auction receives Bids
-    FOREIGN KEY (auctionID) REFERENCES Auction(auctionID),
-    -- User places Bid
-    FOREIGN KEY (userLogin) REFERENCES User(userLogin)
-);
+    auctionID INTEGER NOT NULL,
 
-CREATE TABLE Auction(
-    auctionID SERIAL PRIMARY KEY,
-    auctionStatus CHAR(255) NOT NULL,
-    currentHighestBid INTEGER NOT NULL,
+    userLogin INTEGER NOT NULL,
+    userRole VARCHAR(20) DEFAULT 'Buyer' CHECK (userRole = 'Buyer'),
 
-    -- Relationships below --
-    -- Auction has shipment
-    FOREIGN KEY (shipmentID) REFERENCES Shipment(ShipmentID),
-    -- Item listed in Auction
-    FOREIGN KEY (itemID) REFERENCES Item(itemID),
-    -- Auction has payment
-    FOREIGN KEY (paymentID) REFERENCES Payment(paymentID),
-    -- User Wins Auction
-    FOREIGN KEY (winningUserLogin) REFERENCES User(userLogin),
-    -- User Creates Auction
-    FOREIGN KEY (creatorUserLogin) REFERENCES User(userLogin),
-    -- Auction receives Bids
-    FOREIGN KEY (auctionID) REFERENCES Bid(auctionID)
+    CONSTRAINT bid_auction_fk
+        FOREIGN KEY (auctionID) REFERENCES Auction(auctionID),
+    -- Bidder must be a buyer
+    CONSTRAINT bid_user_fk
+        FOREIGN KEY (userLogin, userRole) REFERENCES "User"(userLogin, userRole)
 );
