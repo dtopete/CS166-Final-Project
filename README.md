@@ -17,11 +17,11 @@ This repository now includes a simple auction client application built with Reac
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-3. Configure the database URL. For PostgreSQL, set:
+3. Configure the database URL if you want to use PostgreSQL. For PostgreSQL, set:
    ```bash
    export DATABASE_URL=postgresql://user:password@localhost:5432/auction_db
    ```
-   If `DATABASE_URL` is not set, the backend falls back to `sqlite:///app.db` for local testing.
+   If `DATABASE_URL` is not set or cannot be reached, the backend now falls back to `sqlite:///app.db` for local testing.
 4. Start the backend:
    ```bash
    python app.py
