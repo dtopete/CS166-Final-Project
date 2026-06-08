@@ -86,6 +86,8 @@ class Auction(db.Model):
             'sellerLogin': self.sellerLogin,
             'itemId': self.itemId,
             'itemName': self.item.itemName if self.item else None,
+            'itemCondition': self.item.condition if self.item else None,
+            'itemDescription': self.item.description if self.item else None,
             'buyerLogin': self.buyerLogin,
             'highestBidder': self.buyerLogin
         }
