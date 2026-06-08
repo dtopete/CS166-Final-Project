@@ -48,6 +48,45 @@ Use the backend seed endpoint to create sample users, an item, and an auction:
 curl -X POST http://localhost:5001/api/seed
 ```
 
+## Database Setup
+
+1. Install PostgreSQL 15:
+brew install postgresql@15
+brew services start postgresql@15
+2. Create the database and load everything:
+createdb auction_db
+psql -d auction_db -f schema.sql
+psql -d auction_db -f data.sql
+psql -d auction_db -f indexes.sql
+
+## Sample Data
+
+The dataset is themed around classic cars and automotive parts. It includes:
+- 10 users (1 Admin, 4 Sellers, 5 Buyers)
+- 12 items (6 classic cars, 4 car parts, 2 collectibles)
+- 12 auctions (8 Active, 4 Closed)
+- 21 bids, 4 payments, 4 shipments
+
+Test credentials:
+| Login | Password | Role |
+|-------|----------|------|
+| admin1 | admin123 | Admin |
+| seller1 | pass1234 | Seller |
+| buyer1 | pass1234 | Buyer |
+
+## Physical Database Design
+
+Performance indexes are defined in `indexes.sql`. They target the most frequently queried columns:
+- `auction(auction_status)` — buyers always filter by Active/Closed
+- `bid(auction_id)` — every auction view joins on this
+- `item(category)` — buyers browse by category
+- `bid(buyer_login)` — buyers check their own bid history
+- `payment(auction_id)` — post-auction payment lookups
+- `shipment(auction_id)` — shipment tracking lookups
+- `auction(seller_login)` — seller dashboard queries
+- `bid(bid_timestamp)` — chronological bid sorting
+
+
 ## Application workflows
 
 - Buyer: browse active auctions and place bids.
