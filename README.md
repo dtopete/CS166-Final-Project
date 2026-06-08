@@ -47,6 +47,23 @@ Use the backend seed endpoint to create sample users, an item, and an auction:
 ```bash
 curl -X POST http://localhost:5001/api/seed
 ```
+## Debugging Purposes
+Reset Database
+```bash
+unset DATABASE_URL
+rm -f instance/app.db
+
+python app.py
+
+or
+
+export DATABASE_URL="sqlite:///instance/app.db"
+```
+
+Kill backend
+```bash
+lsof -i :5001 | grep -v COMMAND | awk '{print $2}' | xargs kill -9 2>/dev/null; echo "Killed old process"
+```
 
 ## Application workflows
 
@@ -59,3 +76,6 @@ curl -X POST http://localhost:5001/api/seed
 - The backend is built using Flask and Flask-SQLAlchemy.
 - The frontend is a lightweight React app with Vite.
 - This solution is a working starting point for Phase 3 client application development.
+
+## Known flaws
+- the auctionId and bidId are not generated sequentially as integers because it is easier to use React's generateId
