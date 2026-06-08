@@ -122,8 +122,14 @@ function App() {
             {buyerAuctions.length === 0 ? (
               <p>No auctions available yet.</p>
             ) : (
-              buyerAuctions.map(auction => (
-                <div key={auction.auctionId} className="item-row">
+              buyerAuctions.map(auction => {
+                const lastBid = auction.bids?.length > 0
+                  ? [...auction.bids].sort((a, b) => new Date(b.bidTimestamp) - new Date(a.bidTimestamp))[0]
+                  : null
+                const lastBidTime = lastBid ? new Date(lastBid.bidTimestamp).toLocaleString() : null
+
+                return (
+                  <div key={auction.auctionId} className="item-row">
                   <div>
                     <strong>{auction.auctionId}</strong> — {auction.itemName || auction.itemId}
                     <div>Seller: {auction.sellerLogin}</div>
@@ -133,7 +139,10 @@ function App() {
                     {auction.itemDescription && (
                       <div>Description: {auction.itemDescription}</div>
                     )}
-                    <div>Current bid: ${auction.currentHighestBid}</div>
+                    <div>
+                      Current bid: ${auction.currentHighestBid}
+                      {lastBidTime && <span className="hint"> (Last bid: {lastBidTime})</span>}
+                    </div>
                     {auction.auctionStatus === 'closed' && (
                       <div>Winner: {auction.buyerLogin || 'None'}</div>
                     )}
@@ -151,7 +160,8 @@ function App() {
                     <div className="hint">Bidding is closed for this auction.</div>
                   )}
                 </div>
-              ))
+                )
+              })
             )}
 
             {form.type === 'bid' && (
@@ -192,7 +202,8 @@ function App() {
                   const auction = auctions.find(a => a.auctionId === bid.auctionId)
                   return (
                     <div key={bid.bidId} className="item-row">
-                      {auction?.itemName || bid.auctionId} — ${bid.bidAmount} — {auction?.auctionStatus || 'unknown'}
+                      {auction?.itemName || bid.auctionId} — ${bid.bidAmount} — {auction?.auctionStatus || 'unknown'} —{' '}
+                      {new Date(bid.bidTimestamp).toLocaleString()}
                       <div>Highest bidder: {auction?.buyerLogin || 'None'}</div>
                     </div>
                   )
@@ -218,11 +229,19 @@ function App() {
               {wonAuctions.length === 0 ? (
                 <p>No won items yet.</p>
               ) : (
-                wonAuctions.map(auction => (
+              wonAuctions.map(auction => {
+                const lastBid = auction.bids?.length > 0
+                  ? [...auction.bids].sort((a, b) => new Date(b.bidTimestamp) - new Date(a.bidTimestamp))[0]
+                  : null
+                const lastBidTime = lastBid ? new Date(lastBid.bidTimestamp).toLocaleString() : 'N/A'
+
+                return (
                   <div key={auction.auctionId} className="item-row">
-                    {auction.itemName || auction.itemId} — ${auction.currentHighestBid}
+                    {auction.shipmentId || 'No Shipment ID'} - {auction.itemName} — ${auction.currentHighestBid} —{' '}
+                    {auction.shippingStatus || 'Not shipped'} — Winning Bid: {lastBidTime}
                   </div>
-                ))
+                )
+              })
               )}
             </div>
 

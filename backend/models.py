@@ -94,6 +94,7 @@ class Auction(db.Model):
             'buyerAddress': self.buyer.address if self.buyer else None,
             'highestBidder': self.buyerLogin,
             'shippingAddress': self.shipment.address if self.shipment else None,
+            'shipmentId': self.shipment.shipmentId if self.shipment else None,
             'shippingStatus': self.shipment.shipmentStatus if self.shipment else None,
             'trackingNumber': self.shipment.trackingNumber if self.shipment else None,
             'paymentStatus': self.payment.paymentStatus if self.payment else None,
