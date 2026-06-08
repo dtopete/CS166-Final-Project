@@ -26,3 +26,17 @@ export async function postResource(path, payload) {
     return { error: 'Unable to reach backend' }
   }
 }
+
+export async function patchResource(path, payload) {
+  try {
+    const response = await fetch(path, {
+      method: 'PATCH',
+      headers: jsonHeaders,
+      body: JSON.stringify(payload)
+    })
+    return await response.json()
+  } catch (error) {
+    console.error(error)
+    return { error: 'Unable to reach backend' }
+  }
+}
