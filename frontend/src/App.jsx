@@ -74,6 +74,7 @@ function App() {
   const wonAuctions = auctions.filter(
     auction => auction.auctionStatus === 'closed' && auction.buyerLogin === user.login
   )
+  const currentUserDetails = users.find(u => u.login === user.login) || {}
 
   return (
     <div className="page">
@@ -223,6 +224,14 @@ function App() {
                   </div>
                 ))
               )}
+            </div>
+
+            <div className="list">
+              <h3>Personal Data</h3>
+              <div>Login: {user.login}</div>
+              <div>Favorite category: {currentUserDetails.favoriteCategory || 'None'}</div>
+              <div>Phone: {currentUserDetails.phoneNum || 'Unknown'}</div>
+              <div>Address: {currentUserDetails.address || 'Unknown'}</div>
             </div>
           </div>
         </section>
