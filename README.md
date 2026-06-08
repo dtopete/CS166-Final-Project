@@ -51,8 +51,12 @@ curl -X POST http://localhost:5001/api/seed
 ## Database Setup
 
 1. Install PostgreSQL 15:
+
+
 brew install postgresql@15
+
 brew services start postgresql@15
+
 2. Create the database and load everything:
 createdb auction_db
 psql -d auction_db -f schema.sql
