@@ -66,6 +66,7 @@ function App() {
 
   const buyerAuctions = auctions
   const sellerItems = items.filter(item => item.sellerLogin === user.login)
+  const sellerAuctions = auctions.filter(auction => auction.sellerLogin === user.login)
   const userBids = bids.filter(bid => bid.buyerLogin === user.login)
   const currentWinningAuctions = auctions.filter(
     auction => auction.auctionStatus === 'active' && auction.buyerLogin === user.login
@@ -124,6 +125,7 @@ function App() {
                 <div key={auction.auctionId} className="item-row">
                   <div>
                     <strong>{auction.auctionId}</strong> — {auction.itemName || auction.itemId}
+                    <div>Seller: {auction.sellerLogin}</div>
                     <div>Status: {auction.auctionStatus}</div>
                     <div>Category: {auction.category}</div>
                     <div>Condition: {auction.itemCondition || 'Unknown'}</div>
@@ -337,9 +339,34 @@ function App() {
             <h3>Your items</h3>
             {sellerItems.length === 0 ? <p>No items yet.</p> : sellerItems.map(item => (
               <div key={item.itemId} className="item-row">
-                <strong>{item.itemName}</strong> — {item.category} — ${item.startingPrice}
+                <strong>{item.itemName}</strong> {item.category} - ${item.startingPrice}
               </div>
             ))}
+          </div>
+
+          <div className="list">
+            <h3>Your auctions</h3>
+            {sellerAuctions.length === 0 ? (
+              <p>No auctions yet.</p>
+            ) : (
+              sellerAuctions.map(auction => (
+                <div key={auction.auctionId} className="item-row">
+                  <strong>{auction.itemName || auction.itemId}</strong>
+                  <div>Status: {auction.auctionStatus}</div>
+                  <div>Winning bid: ${auction.currentHighestBid}</div>
+                  {auction.auctionStatus === 'closed' && (
+                    <>
+                      <div>Winner: {auction.buyerLogin || 'None'}</div>
+                      <div>Winner phone: {auction.buyerPhone || 'Unknown'}</div>
+                      <div>Shipping status: {auction.shippingStatus || 'Not shipped'}</div>
+                      {auction.shippingAddress && (
+                        <div>Shipping address: {auction.shippingAddress}</div>
+                      )}
+                    </>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </section>
       )}

@@ -86,10 +86,19 @@ class Auction(db.Model):
             'sellerLogin': self.sellerLogin,
             'itemId': self.itemId,
             'itemName': self.item.itemName if self.item else None,
+            'itemCategory': self.item.category if self.item else None,
             'itemCondition': self.item.condition if self.item else None,
             'itemDescription': self.item.description if self.item else None,
             'buyerLogin': self.buyerLogin,
-            'highestBidder': self.buyerLogin
+            'buyerPhoneNum': self.buyer.phoneNum if self.buyer else None,
+            'buyerAddress': self.buyer.address if self.buyer else None,
+            'highestBidder': self.buyerLogin,
+            'shippingAddress': self.shipment.address if self.shipment else None,
+            'shippingStatus': self.shipment.shipmentStatus if self.shipment else None,
+            'trackingNumber': self.shipment.trackingNumber if self.shipment else None,
+            'paymentStatus': self.payment.paymentStatus if self.payment else None,
+            'paymentAmount': self.payment.amount if self.payment else None,
+            'bids': [bid.serialize() for bid in self.bids] if self.bids else []
         }
 
 class Payment(db.Model):
