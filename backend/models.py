@@ -85,7 +85,9 @@ class Auction(db.Model):
             'currentHighestBid': self.currentHighestBid,
             'sellerLogin': self.sellerLogin,
             'itemId': self.itemId,
-            'buyerLogin': self.buyerLogin
+            'itemName': self.item.itemName if self.item else None,
+            'buyerLogin': self.buyerLogin,
+            'highestBidder': self.buyerLogin
         }
 
 class Payment(db.Model):

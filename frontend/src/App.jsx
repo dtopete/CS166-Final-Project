@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchAll, postResource } from './api'
+import { fetchAll, postResource, patchResource } from './api'
 
 const emptyLogin = { role: 'Buyer', login: '' }
 
@@ -8,6 +8,7 @@ function App() {
   const [items, setItems] = useState([])
   const [auctions, setAuctions] = useState([])
   const [users, setUsers] = useState([])
+  const [bids, setBids] = useState([])
   const [status, setStatus] = useState('')
   const [form, setForm] = useState({})
 
@@ -35,6 +36,7 @@ function App() {
     setItems(await fetchAll('/api/items'))
     setAuctions(await fetchAll('/api/auctions'))
     setUsers(await fetchAll('/api/users'))
+    setBids(await fetchAll('/api/bids'))
   }
 
   function handleChange(event) {
@@ -53,8 +55,21 @@ function App() {
     reloadData()
   }
 
+  async function handlePatch(path, payload) {
+    const result = await patchResource(path, payload)
+    if (result.error) {
+      setStatus(result.error)
+      return
+    }
+    setStatus('Updated successfully.')
+    setForm({})
+    reloadData()
+  }
+
   const buyerAuctions = auctions.filter(auction => auction.auctionStatus === 'active')
   const sellerItems = items.filter(item => item.sellerLogin === user.login)
+  const userBids = bids.filter(bid => bid.buyerLogin === user.login)
+  const userWinningAuctions = auctions.filter(auction => auction.buyerLogin === user.login)
 
   return (
     <div className="page">
@@ -105,7 +120,7 @@ function App() {
               buyerAuctions.map(auction => (
                 <div key={auction.auctionId} className="item-row">
                   <div>
-                    <strong>{auction.auctionId}</strong> — item {auction.itemId}
+                    <strong>{auction.auctionId}</strong> — {auction.itemName || auction.itemId}
                     <div>Current bid: ${auction.currentHighestBid}</div>
                   </div>
                   <button
@@ -145,6 +160,36 @@ function App() {
                 </button>
               </div>
             )}
+
+            <div className="list">
+              <h3>Your bids</h3>
+              {userBids.length === 0 ? (
+                <p>No bids placed yet.</p>
+              ) : (
+                userBids.map(bid => {
+                  const auction = auctions.find(a => a.auctionId === bid.auctionId)
+                  return (
+                    <div key={bid.bidId} className="item-row">
+                      {auction?.itemName || bid.auctionId} — ${bid.bidAmount} — {auction?.auctionStatus || 'unknown'}
+                      <div>Highest bidder: {auction?.buyerLogin || 'None'}</div>
+                    </div>
+                  )
+                })
+              )}
+            </div>
+
+            <div className="list">
+              <h3>Your current winnings</h3>
+              {userWinningAuctions.length === 0 ? (
+                <p>No current winning bids.</p>
+              ) : (
+                userWinningAuctions.map(auction => (
+                  <div key={auction.auctionId} className="item-row">
+                    {auction.itemName || auction.itemId} — ${auction.currentHighestBid} — {auction.auctionStatus}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </section>
       )}
@@ -281,11 +326,53 @@ function App() {
             ))}
           </div>
 
+          <div className="form-panel">
+            <h3>Manage Listings</h3>
+            <label>
+              Auction
+              <select
+                name="modifyAuctionId"
+                value={form.modifyAuctionId || ''}
+                onChange={handleChange}
+              >
+                <option value="">Select auction</option>
+                {auctions.map(a => (
+                  <option key={a.auctionId} value={a.auctionId}>
+                    {a.auctionId} — {a.itemName || a.itemId}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Status
+              <select
+                name="modifyAuctionStatus"
+                value={form.modifyAuctionStatus || 'active'}
+                onChange={handleChange}
+              >
+                <option value="active">active</option>
+                <option value="closed">closed</option>
+                <option value="cancelled">cancelled</option>
+              </select>
+            </label>
+            <button
+              disabled={!form.modifyAuctionId}
+              onClick={() =>
+                handlePatch(`/api/auctions/${form.modifyAuctionId}`, {
+                  adminLogin: user.login,
+                  auctionStatus: form.modifyAuctionStatus
+                })
+              }
+            >
+              Update Listing
+            </button>
+          </div>
+
           <div className="list">
             <h3>Auctions</h3>
             {auctions.map(a => (
               <div key={a.auctionId} className="item-row">
-                {a.auctionId} — item {a.itemId} — {a.auctionStatus} — ${a.currentHighestBid}
+                {a.auctionId} — {a.itemName || a.itemId} — seller: {a.sellerLogin} — {a.auctionStatus} — ${a.currentHighestBid} — highest bidder: {a.buyerLogin || 'None'}
               </div>
             ))}
           </div>
