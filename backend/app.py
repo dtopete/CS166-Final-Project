@@ -37,33 +37,33 @@ def create_app():
         ]
 
         items = [
-            {'itemId': '1',  'itemName': '1996 Chevrolet Corvette C4',   'category': 'Cars',        'startingPrice': 8000.00,  'imageURL': None, 'condition': 'Used', 'description': '1996 Chevy Corvette C4, 5.7L V8, red, 89k miles, runs great.',            'sellerLogin': 'seller1'},
-            {'itemId': '2',  'itemName': '1994 Chevrolet Camaro Z28',    'category': 'Cars',        'startingPrice': 6500.00,  'imageURL': None, 'condition': 'Used', 'description': '1994 Camaro Z28, 5.7L V8, black, T-tops, 102k miles.',                    'sellerLogin': 'seller1'},
-            {'itemId': '3',  'itemName': '1993 Ford Mustang GT',         'category': 'Cars',        'startingPrice': 5500.00,  'imageURL': None, 'condition': 'Used', 'description': '1993 Mustang GT, 5.0L V8, red, 5-speed manual, 95k miles.',               'sellerLogin': 'seller2'},
-            {'itemId': '4',  'itemName': '1991 Dodge Viper RT/10',       'category': 'Cars',        'startingPrice': 18000.00, 'imageURL': None, 'condition': 'Used', 'description': '1991 Dodge Viper RT/10, 8.0L V10, red, collector condition, 45k miles.',  'sellerLogin': 'seller2'},
-            {'itemId': '5',  'itemName': '1998 Pontiac Trans Am',        'category': 'Cars',        'startingPrice': 7000.00,  'imageURL': None, 'condition': 'Used', 'description': '1998 Pontiac Trans Am, 5.7L LS1, white, 78k miles, WS6 package.',         'sellerLogin': 'seller3'},
-            {'itemId': '6',  'itemName': '1995 Chevrolet Impala SS',     'category': 'Cars',        'startingPrice': 9000.00,  'imageURL': None, 'condition': 'Used', 'description': '1995 Chevy Impala SS, 5.7L LT1, black, 67k miles, all original.',         'sellerLogin': 'seller3'},
-            {'itemId': '7',  'itemName': 'Holley Carb 750 CFM',          'category': 'Car Parts',   'startingPrice': 250.00,   'imageURL': None, 'condition': 'Used', 'description': 'Holley double-pumper 750 CFM carburetor, fits small block Chevy.',         'sellerLogin': 'seller4'},
-            {'itemId': '8',  'itemName': 'Flowmaster Exhaust System',    'category': 'Car Parts',   'startingPrice': 180.00,   'imageURL': None, 'condition': 'New',  'description': 'Flowmaster American Thunder cat-back exhaust, fits 93-97 Camaro/Firebird.', 'sellerLogin': 'seller4'},
-            {'itemId': '9',  'itemName': 'Edelbrock Intake Manifold',    'category': 'Car Parts',   'startingPrice': 320.00,   'imageURL': None, 'condition': 'Used', 'description': 'Edelbrock Performer RPM intake manifold for small block Chevy 350.',       'sellerLogin': 'seller1'},
-            {'itemId': '10', 'itemName': 'Vintage Corvette Poster Set',  'category': 'Collectibles', 'startingPrice': 45.00,    'imageURL': None, 'condition': 'New',  'description': 'Set of 6 vintage Corvette racing posters, 18x24 inches each.',             'sellerLogin': 'seller2'},
-            {'itemId': '11', 'itemName': 'Car Cover for Corvette C4',    'category': 'Car Parts',   'startingPrice': 80.00,    'imageURL': None, 'condition': 'New',  'description': 'Custom-fit car cover for C4 Corvette, weatherproof, grey.',                'sellerLogin': 'seller3'},
-            {'itemId': '12', 'itemName': '1:18 Scale 1969 Camaro Model', 'category': 'Collectibles', 'startingPrice': 35.00,    'imageURL': None, 'condition': 'New',  'description': 'Die-cast 1:18 scale model of 1969 Chevy Camaro SS, orange with stripes.',  'sellerLogin': 'seller4'}
+            {'itemId': 1,  'itemName': '1996 Chevrolet Corvette C4',   'category': 'Cars',        'startingPrice': 8000.00,  'imageURL': None, 'condition': 'Used', 'description': '1996 Chevy Corvette C4, 5.7L V8, red, 89k miles, runs great.',            'sellerLogin': 'seller1'},
+            {'itemId': 2,  'itemName': '1994 Chevrolet Camaro Z28',    'category': 'Cars',        'startingPrice': 6500.00,  'imageURL': None, 'condition': 'Used', 'description': '1994 Camaro Z28, 5.7L V8, black, T-tops, 102k miles.',                    'sellerLogin': 'seller1'},
+            {'itemId': 3,  'itemName': '1993 Ford Mustang GT',         'category': 'Cars',        'startingPrice': 5500.00,  'imageURL': None, 'condition': 'Used', 'description': '1993 Mustang GT, 5.0L V8, red, 5-speed manual, 95k miles.',               'sellerLogin': 'seller2'},
+            {'itemId': 4,  'itemName': '1991 Dodge Viper RT/10',       'category': 'Cars',        'startingPrice': 18000.00, 'imageURL': None, 'condition': 'Used', 'description': '1991 Dodge Viper RT/10, 8.0L V10, red, collector condition, 45k miles.',  'sellerLogin': 'seller2'},
+            {'itemId': 5,  'itemName': '1998 Pontiac Trans Am',        'category': 'Cars',        'startingPrice': 7000.00,  'imageURL': None, 'condition': 'Used', 'description': '1998 Pontiac Trans Am, 5.7L LS1, white, 78k miles, WS6 package.',         'sellerLogin': 'seller3'},
+            {'itemId': 6,  'itemName': '1995 Chevrolet Impala SS',     'category': 'Cars',        'startingPrice': 9000.00,  'imageURL': None, 'condition': 'Used', 'description': '1995 Chevy Impala SS, 5.7L LT1, black, 67k miles, all original.',         'sellerLogin': 'seller3'},
+            {'itemId': 7,  'itemName': 'Holley Carb 750 CFM',          'category': 'Car Parts',   'startingPrice': 250.00,   'imageURL': None, 'condition': 'Used', 'description': 'Holley double-pumper 750 CFM carburetor, fits small block Chevy.',         'sellerLogin': 'seller4'},
+            {'itemId': 8,  'itemName': 'Flowmaster Exhaust System',    'category': 'Car Parts',   'startingPrice': 180.00,   'imageURL': None, 'condition': 'New',  'description': 'Flowmaster American Thunder cat-back exhaust, fits 93-97 Camaro/Firebird.', 'sellerLogin': 'seller4'},
+            {'itemId': 9,  'itemName': 'Edelbrock Intake Manifold',    'category': 'Car Parts',   'startingPrice': 320.00,   'imageURL': None, 'condition': 'Used', 'description': 'Edelbrock Performer RPM intake manifold for small block Chevy 350.',       'sellerLogin': 'seller1'},
+            {'itemId': 10, 'itemName': 'Vintage Corvette Poster Set',  'category': 'Collectibles', 'startingPrice': 45.00,    'imageURL': None, 'condition': 'New',  'description': 'Set of 6 vintage Corvette racing posters, 18x24 inches each.',             'sellerLogin': 'seller2'},
+            {'itemId': 11, 'itemName': 'Car Cover for Corvette C4',    'category': 'Car Parts',   'startingPrice': 80.00,    'imageURL': None, 'condition': 'New',  'description': 'Custom-fit car cover for C4 Corvette, weatherproof, grey.',                'sellerLogin': 'seller3'},
+            {'itemId': 12, 'itemName': '1:18 Scale 1969 Camaro Model', 'category': 'Collectibles', 'startingPrice': 35.00,    'imageURL': None, 'condition': 'New',  'description': 'Die-cast 1:18 scale model of 1969 Chevy Camaro SS, orange with stripes.',  'sellerLogin': 'seller4'}
         ]
 
         auctions = [
-            {'auctionId': '1',  'auctionStatus': 'active',   'currentHighestBid': 8750.00, 'sellerLogin': 'seller1', 'itemId': '1',  'buyerLogin': None},
-            {'auctionId': '2',  'auctionStatus': 'active',   'currentHighestBid': 7000.00, 'sellerLogin': 'seller1', 'itemId': '2',  'buyerLogin': None},
-            {'auctionId': '3',  'auctionStatus': 'active',   'currentHighestBid': 6000.00, 'sellerLogin': 'seller2', 'itemId': '3',  'buyerLogin': None},
-            {'auctionId': '4',  'auctionStatus': 'active',   'currentHighestBid': 19500.00,'sellerLogin': 'seller2', 'itemId': '4',  'buyerLogin': None},
-            {'auctionId': '5',  'auctionStatus': 'active',   'currentHighestBid': 7500.00, 'sellerLogin': 'seller3', 'itemId': '5',  'buyerLogin': None},
-            {'auctionId': '6',  'auctionStatus': 'active',   'currentHighestBid': 9500.00, 'sellerLogin': 'seller3', 'itemId': '6',  'buyerLogin': None},
-            {'auctionId': '7',  'auctionStatus': 'active',   'currentHighestBid': 275.00,  'sellerLogin': 'seller4', 'itemId': '7',  'buyerLogin': None},
-            {'auctionId': '8',  'auctionStatus': 'active',   'currentHighestBid': 200.00,  'sellerLogin': 'seller4', 'itemId': '8',  'buyerLogin': None},
-            {'auctionId': '9',  'auctionStatus': 'closed',   'currentHighestBid': 360.00,  'sellerLogin': 'seller1', 'itemId': '9',  'buyerLogin': 'buyer1'},
-            {'auctionId': '10', 'auctionStatus': 'closed',   'currentHighestBid': 60.00,   'sellerLogin': 'seller2', 'itemId': '10', 'buyerLogin': 'buyer2'},
-            {'auctionId': '11', 'auctionStatus': 'closed',   'currentHighestBid': 95.00,   'sellerLogin': 'seller3', 'itemId': '11', 'buyerLogin': 'buyer3'},
-            {'auctionId': '12', 'auctionStatus': 'closed',   'currentHighestBid': 50.00,   'sellerLogin': 'seller4', 'itemId': '12', 'buyerLogin': 'buyer4'}
+            {'auctionId': 1,  'auctionStatus': 'active',   'currentHighestBid': 8750.00, 'sellerLogin': 'seller1', 'itemId': 1,  'buyerLogin': None},
+            {'auctionId': 2,  'auctionStatus': 'active',   'currentHighestBid': 7000.00, 'sellerLogin': 'seller1', 'itemId': 2,  'buyerLogin': None},
+            {'auctionId': 3,  'auctionStatus': 'active',   'currentHighestBid': 6000.00, 'sellerLogin': 'seller2', 'itemId': 3,  'buyerLogin': None},
+            {'auctionId': 4,  'auctionStatus': 'active',   'currentHighestBid': 19500.00,'sellerLogin': 'seller2', 'itemId': 4,  'buyerLogin': None},
+            {'auctionId': 5,  'auctionStatus': 'active',   'currentHighestBid': 7500.00, 'sellerLogin': 'seller3', 'itemId': 5,  'buyerLogin': None},
+            {'auctionId': 6,  'auctionStatus': 'active',   'currentHighestBid': 9500.00, 'sellerLogin': 'seller3', 'itemId': 6,  'buyerLogin': None},
+            {'auctionId': 7,  'auctionStatus': 'active',   'currentHighestBid': 275.00,  'sellerLogin': 'seller4', 'itemId': 7,  'buyerLogin': None},
+            {'auctionId': 8,  'auctionStatus': 'active',   'currentHighestBid': 200.00,  'sellerLogin': 'seller4', 'itemId': 8,  'buyerLogin': None},
+            {'auctionId': 9,  'auctionStatus': 'closed',   'currentHighestBid': 360.00,  'sellerLogin': 'seller1', 'itemId': 9,  'buyerLogin': 'buyer1'},
+            {'auctionId': 10, 'auctionStatus': 'closed',   'currentHighestBid': 60.00,   'sellerLogin': 'seller2', 'itemId': 10, 'buyerLogin': 'buyer2'},
+            {'auctionId': 11, 'auctionStatus': 'closed',   'currentHighestBid': 95.00,   'sellerLogin': 'seller3', 'itemId': 11, 'buyerLogin': 'buyer3'},
+            {'auctionId': 12, 'auctionStatus': 'closed',   'currentHighestBid': 50.00,   'sellerLogin': 'seller4', 'itemId': 12, 'buyerLogin': 'buyer4'}
         ]
 
         bids = [
@@ -91,17 +91,17 @@ def create_app():
         ]
 
         payments = [
-            {'paymentId': '1', 'auctionId': '9',  'buyerLogin': 'buyer1', 'amount': 360.00, 'paymentStatus': 'completed'},
-            {'paymentId': '2', 'auctionId': '10', 'buyerLogin': 'buyer2', 'amount': 60.00,  'paymentStatus': 'completed'},
-            {'paymentId': '3', 'auctionId': '11', 'buyerLogin': 'buyer3', 'amount': 95.00,  'paymentStatus': 'pending'},
-            {'paymentId': '4', 'auctionId': '12', 'buyerLogin': 'buyer4', 'amount': 50.00,  'paymentStatus': 'pending'}
+            {'paymentId': '1', 'auctionId': 9,  'buyerLogin': 'buyer1', 'amount': 360.00, 'paymentStatus': 'completed'},
+            {'paymentId': '2', 'auctionId': 10, 'buyerLogin': 'buyer2', 'amount': 60.00,  'paymentStatus': 'completed'},
+            {'paymentId': '3', 'auctionId': 11, 'buyerLogin': 'buyer3', 'amount': 95.00,  'paymentStatus': 'pending'},
+            {'paymentId': '4', 'auctionId': 12, 'buyerLogin': 'buyer4', 'amount': 50.00,  'paymentStatus': 'pending'}
         ]
 
         shipments = [
-            {'shipmentId': '1', 'auctionId': '9',  'address': '100 Buyer Blvd, Riverside, CA',   'shipmentStatus': 'delivered', 'trackingNumber': 'TRK-0001-2026'},
-            {'shipmentId': '2', 'auctionId': '10', 'address': '200 Bidder St, Fresno, CA',        'shipmentStatus': 'shipped',   'trackingNumber': 'TRK-0002-2026'},
-            {'shipmentId': '3', 'auctionId': '11', 'address': '300 Auction Ave, Bakersfield, CA', 'shipmentStatus': 'pending',   'trackingNumber': None},
-            {'shipmentId': '4', 'auctionId': '12', 'address': '400 Winning Way, Long Beach, CA',  'shipmentStatus': 'pending',   'trackingNumber': None}
+            {'shipmentId': '1', 'auctionId': 9,  'address': '100 Buyer Blvd, Riverside, CA',   'shipmentStatus': 'delivered', 'trackingNumber': 'TRK-0001-2026'},
+            {'shipmentId': '2', 'auctionId': 10, 'address': '200 Bidder St, Fresno, CA',        'shipmentStatus': 'shipped',   'trackingNumber': 'TRK-0002-2026'},
+            {'shipmentId': '3', 'auctionId': 11, 'address': '300 Auction Ave, Bakersfield, CA', 'shipmentStatus': 'pending',   'trackingNumber': None},
+            {'shipmentId': '4', 'auctionId': 12, 'address': '400 Winning Way, Long Beach, CA',  'shipmentStatus': 'pending',   'trackingNumber': None}
         ]
 
         all_entries = []
@@ -169,7 +169,7 @@ def create_app():
             return jsonify([item.serialize() for item in Item.query.all()])
 
         payload = request.get_json() or {}
-        required = ['itemId', 'itemName', 'condition', 'startingPrice', 'sellerLogin']
+        required = ['itemName', 'condition', 'startingPrice', 'sellerLogin']
         missing = [k for k in required if not payload.get(k)]
         if missing:
             return error('Missing fields: ' + ', '.join(missing))
@@ -178,11 +178,7 @@ def create_app():
         if not seller:
             return error('sellerLogin must reference a Seller user')
 
-        if Item.query.get(payload['itemId']):
-            return error('itemId already exists')
-
         item = Item(
-            itemId=payload['itemId'],
             itemName=payload['itemName'],
             category=payload.get('category'),
             imageURL=payload.get('imageURL'),
@@ -201,7 +197,7 @@ def create_app():
             return jsonify([auction.serialize() for auction in Auction.query.all()])
 
         payload = request.get_json() or {}
-        required = ['auctionId', 'auctionStatus', 'sellerLogin', 'itemId']
+        required = ['auctionStatus', 'sellerLogin', 'itemId']
         missing = [k for k in required if not payload.get(k)]
         if missing:
             return error('Missing fields: ' + ', '.join(missing))
@@ -214,11 +210,7 @@ def create_app():
         if not item:
             return error('itemId must reference an existing item')
 
-        if Auction.query.get(payload['auctionId']):
-            return error('auctionId already exists')
-
         auction = Auction(
-            auctionId=payload['auctionId'],
             auctionStatus=payload['auctionStatus'],
             currentHighestBid=float(payload.get('currentHighestBid', 0.0)),
             sellerLogin=payload['sellerLogin'],
