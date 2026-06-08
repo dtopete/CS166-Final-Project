@@ -48,6 +48,24 @@ Use the backend seed endpoint to create sample users, an item, and an auction:
 curl -X POST http://localhost:5001/api/seed
 ```
 
+## Debugging Purposes
+Reset Database
+```bash
+unset DATABASE_URL
+rm -f instance/app.db
+
+python app.py
+
+or
+
+export DATABASE_URL="sqlite:///instance/app.db"
+```
+
+Kill backend
+```bash
+lsof -i :5001 | grep -v COMMAND | awk '{print $2}' | xargs kill -9 2>/dev/null; echo "Killed old process"
+```
+
 ## Application workflows
 
 - Buyer: browse active auctions and place bids.

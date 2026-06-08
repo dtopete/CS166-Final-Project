@@ -232,7 +232,7 @@ function App() {
           <div className="grid">
             <div className="form-panel">
               <h3>Create Item</h3>
-              <p className="hint">Item ID is assigned automatically when the item is created.</p>
+              <p className="hint">Item IDs are sequentially generated.</p>
               <label>
                 Name
                 <input name="itemName" value={form.itemName || ''} onChange={handleChange} />
@@ -275,7 +275,6 @@ function App() {
               <button
                 onClick={() =>
                   handleSubmit('/api/items', {
-                    itemId: generateId('item'),
                     itemName: form.itemName,
                     category: form.category || categories[0],
                     condition: form.condition,
@@ -320,7 +319,6 @@ function App() {
                 disabled={!form.listedItemId}
                 onClick={() =>
                   handleSubmit('/api/auctions', {
-                    auctionId: generateId('auction'),
                     auctionStatus: form.auctionStatus,
                     currentHighestBid: form.currentHighestBid || 0,
                     sellerLogin: user.login,

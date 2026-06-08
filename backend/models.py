@@ -38,7 +38,7 @@ class User(db.Model):
 class Item(db.Model):
     __tablename__ = 'items'
 
-    itemId = db.Column(db.String(20), primary_key=True)
+    itemId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     itemName = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255))
     imageURL = db.Column(db.String(255))
@@ -51,7 +51,7 @@ class Item(db.Model):
 
     def serialize(self):
         return {
-            'itemId': self.itemId,
+            'itemId': int(self.itemId) if self.itemId else None,
             'itemName': self.itemName,
             'category': self.category,
             'imageURL': self.imageURL,
@@ -64,11 +64,11 @@ class Item(db.Model):
 class Auction(db.Model):
     __tablename__ = 'auctions'
 
-    auctionId = db.Column(db.String(30), primary_key=True)
+    auctionId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     auctionStatus = db.Column(AuctionStatus, nullable=False)
     currentHighestBid = db.Column(db.Float, nullable=False, default=0.0)
     sellerLogin = db.Column(db.String(20), db.ForeignKey('users.login'), nullable=False)
-    itemId = db.Column(db.String(20), db.ForeignKey('items.itemId'), nullable=False)
+    itemId = db.Column(db.Integer, db.ForeignKey('items.itemId'), nullable=False)
     buyerLogin = db.Column(db.String(20), db.ForeignKey('users.login'))
 
     seller = db.relationship('User', foreign_keys=[sellerLogin], back_populates='auctions')
@@ -80,11 +80,11 @@ class Auction(db.Model):
 
     def serialize(self):
         return {
-            'auctionId': self.auctionId,
+            'auctionId': int(self.auctionId) if self.auctionId else None,
             'auctionStatus': self.auctionStatus,
             'currentHighestBid': self.currentHighestBid,
             'sellerLogin': self.sellerLogin,
-            'itemId': self.itemId,
+            'itemId': int(self.itemId) if self.itemId else None,
             'itemName': self.item.itemName if self.item else None,
             'itemCondition': self.item.condition if self.item else None,
             'itemDescription': self.item.description if self.item else None,
@@ -99,7 +99,7 @@ class Payment(db.Model):
     amount = db.Column(db.Float, nullable=False)
     paymentStatus = db.Column(PaymentStatus, nullable=False)
     buyerLogin = db.Column(db.String(20), db.ForeignKey('users.login'), nullable=False)
-    auctionId = db.Column(db.String(30), db.ForeignKey('auctions.auctionId'), unique=True, nullable=False)
+    auctionId = db.Column(db.Integer, db.ForeignKey('auctions.auctionId'), unique=True, nullable=False)
 
     buyer = db.relationship('User', back_populates='payments')
     auction = db.relationship('Auction', back_populates='payment')
@@ -110,7 +110,7 @@ class Payment(db.Model):
             'amount': self.amount,
             'paymentStatus': self.paymentStatus,
             'buyerLogin': self.buyerLogin,
-            'auctionId': self.auctionId
+            'auctionId': int(self.auctionId) if self.auctionId else None
         }
 
 class Shipment(db.Model):
@@ -120,7 +120,7 @@ class Shipment(db.Model):
     address = db.Column(db.Text, nullable=False)
     shipmentStatus = db.Column(ShipmentStatus, nullable=False)
     trackingNumber = db.Column(db.String(255))
-    auctionId = db.Column(db.String(30), db.ForeignKey('auctions.auctionId'), unique=True, nullable=False)
+    auctionId = db.Column(db.Integer, db.ForeignKey('auctions.auctionId'), unique=True, nullable=False)
 
     auction = db.relationship('Auction', back_populates='shipment')
 
@@ -130,7 +130,7 @@ class Shipment(db.Model):
             'address': self.address,
             'shipmentStatus': self.shipmentStatus,
             'trackingNumber': str(self.trackingNumber) if self.trackingNumber is not None else None,
-            'auctionId': self.auctionId
+            'auctionId': int(self.auctionId) if self.auctionId else None
         }
 
 class Bid(db.Model):
@@ -140,7 +140,7 @@ class Bid(db.Model):
     bidAmount = db.Column(db.Float, nullable=False)
     bidTimestamp = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
     buyerLogin = db.Column(db.String(20), db.ForeignKey('users.login'), nullable=False)
-    auctionId = db.Column(db.String(30), db.ForeignKey('auctions.auctionId'), nullable=False)
+    auctionId = db.Column(db.Integer, db.ForeignKey('auctions.auctionId'), nullable=False)
 
     buyer = db.relationship('User', back_populates='bids')
     auction = db.relationship('Auction', back_populates='bids')
@@ -151,5 +151,5 @@ class Bid(db.Model):
             'bidAmount': self.bidAmount,
             'bidTimestamp': self.bidTimestamp.isoformat(),
             'buyerLogin': self.buyerLogin,
-            'auctionId': self.auctionId
+            'auctionId': int(self.auctionId) if self.auctionId else None
         }
