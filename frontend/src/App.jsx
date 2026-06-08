@@ -13,13 +13,11 @@ function App() {
   const [form, setForm] = useState({})
 
   const categories = [
-    'Electronics',
-    'Books',
-    'Clothing',
-    'Home & Kitchen',
-    'Sports',
-    'Toys',
+    'Cars',
+    'Car Parts',
     'Collectibles',
+    'Electronics',
+    'Clothing',
     'Other'
   ]
 
@@ -127,6 +125,7 @@ function App() {
                   <div>
                     <strong>{auction.auctionId}</strong> — {auction.itemName || auction.itemId}
                     <div>Status: {auction.auctionStatus}</div>
+                    <div>Category: {auction.category}</div>
                     <div>Condition: {auction.itemCondition || 'Unknown'}</div>
                     {auction.itemDescription && (
                       <div>Description: {auction.itemDescription}</div>
@@ -250,10 +249,9 @@ function App() {
               </label>
               <label>
                 Condition
-                <select name="condition" value={form.condition || 'available'} onChange={handleChange}>
-                  <option value="available">available</option>
-                  <option value="sold">sold</option>
-                  <option value="removed">removed</option>
+                <select name="condition" value={form.condition || 'New'} onChange={handleChange}>
+                  <option value="New">New</option>
+                  <option value="Used">Used</option>
                 </select>
               </label>
               <label>

@@ -6,7 +6,7 @@ from sqlalchemy import Enum, Numeric, func
 db = SQLAlchemy()
 
 UserRole = Enum('Seller', 'Buyer', 'Admin', name='user_role')
-ItemCondition = Enum('available', 'sold', 'removed', name='item_condition')
+ItemCondition = Enum('New', 'Used', name='item_condition')
 AuctionStatus = Enum('active', 'closed', 'cancelled', name='auction_status')
 PaymentStatus = Enum('pending', 'completed', 'failed', name='payment_status')
 ShipmentStatus = Enum('pending', 'shipped', 'delivered', name='shipment_status')
@@ -119,7 +119,7 @@ class Shipment(db.Model):
     shipmentId = db.Column(db.String(30), primary_key=True)
     address = db.Column(db.Text, nullable=False)
     shipmentStatus = db.Column(ShipmentStatus, nullable=False)
-    trackingNumber = db.Column(Numeric(10, 0))
+    trackingNumber = db.Column(db.String(255))
     auctionId = db.Column(db.String(30), db.ForeignKey('auctions.auctionId'), unique=True, nullable=False)
 
     auction = db.relationship('Auction', back_populates='shipment')

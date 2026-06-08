@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS Item CASCADE;
 DROP TABLE IF EXISTS "User" CASCADE;
 
 CREATE TYPE user_role AS ENUM ('Seller', 'Buyer', 'Admin');
-CREATE TYPE item_condition AS ENUM ('available', 'sold', 'removed');
+CREATE TYPE item_condition AS ENUM ('New', 'Used');
 CREATE TYPE a_status AS ENUM ('active', 'closed', 'cancelled');
 CREATE TYPE p_status AS ENUM ('pending', 'completed', 'failed');
 CREATE TYPE s_status AS ENUM ('pending', 'shipped', 'delivered');
@@ -54,7 +54,7 @@ CREATE TABLE Shipment (
     shipmentId CHAR(30) PRIMARY KEY,
     address TEXT NOT NULL,
     shipmentStatus s_status NOT NULL,
-    trackingNumber NUMERIC(10,0),
+    trackingNumber TEXT,
     auctionId CHAR(30) UNIQUE NOT NULL REFERENCES Auction(auctionId)
 );
 
