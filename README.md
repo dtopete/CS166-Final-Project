@@ -7,6 +7,7 @@ This repository now includes a simple auction client application built with Reac
 - `schema.sql` — PostgreSQL schema for Users, Items, Auctions, Payments, Shipments, and Bids.
 - `backend/` — Flask backend service with SQLAlchemy database models and REST API endpoints.
 - `frontend/` — React + Vite client application for Buyer, Seller, and Admin workflows.
+- `databases/` - PostgreSQL schema, database, and Indexes.
 
 ## Running the backend
 
