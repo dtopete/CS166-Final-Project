@@ -120,10 +120,7 @@ function App() {
             {form.type === 'bid' && (
               <div className="form-panel">
                 <h3>Place a bid</h3>
-                <label>
-                  Bid ID
-                  <input name="bidId" value={form.bidId || ''} onChange={handleChange} />
-                </label>
+                <p className="hint">Bid ID is assigned automatically.</p>
                 <label>
                   Amount
                   <input
@@ -137,7 +134,7 @@ function App() {
                 <button
                   onClick={() =>
                     handleSubmit('/api/bids', {
-                      bidId: form.bidId,
+                      bidId: form.bidId || generateId('bid'),
                       bidAmount: form.bidAmount,
                       buyerLogin: user.login,
                       auctionId: form.auctionId
