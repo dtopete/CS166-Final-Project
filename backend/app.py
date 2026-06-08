@@ -104,6 +104,26 @@ def create_app():
         db.session.commit()
         return jsonify(auction.serialize()), 201
 
+    @app.route('/api/auctions/<auction_id>', methods=['PATCH'])
+    def update_auction(auction_id):
+        payload = request.get_json() or {}
+        if not payload.get('adminLogin'):
+            return error('adminLogin is required')
+
+        admin = User.query.filter_by(login=payload['adminLogin'], role='Admin').first()
+        if not admin:
+            return error('adminLogin must reference an Admin user')
+
+        auction = Auction.query.get(auction_id)
+        if not auction:
+            return error('auctionId does not exist')
+
+        if 'auctionStatus' in payload:
+            auction.auctionStatus = payload['auctionStatus']
+
+        db.session.commit()
+        return jsonify(auction.serialize())
+
     @app.route('/api/bids', methods=['GET', 'POST'])
     def bids():
         if request.method == 'GET':
