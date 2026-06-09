@@ -67,7 +67,15 @@ function App() {
   // --- Derived State Variables ---
   const buyerAuctions = auctions
   const sellerItems = items.filter(item => item.sellerLogin === user.login)
-  const sellerAuctions = auctions.filter(auction => auction.sellerLogin === user.login)
+  //const sellerAuctions = auctions.filter(auction => auction.sellerLogin === user.login)
+  const sellerAuctions = Object.values(
+    auctions
+      .filter(auction => auction.sellerLogin === user.login)
+      .reduce((acc, auction) => {
+        acc[auction.auctionId] = auction
+        return acc
+      }, {})
+  )
   const userBids = bids.filter(bid => bid.buyerLogin === user.login)
   const currentWinningAuctions = auctions.filter(
     auction => auction.auctionStatus === 'active' && auction.buyerLogin === user.login
@@ -75,9 +83,10 @@ function App() {
   const wonAuctions = auctions.filter(
     auction => auction.auctionStatus === 'closed' && auction.buyerLogin === user.login
   )
+  // Find current user
   const currentUserDetails = users.find(u => u.login === user.login) || {}
   
-  // Find the selected auction details if a user is currently bidding
+  // Find selected auction details if a user is currently bidding
   const selectedAuctionForBid = auctions.find(a => a.auctionId === form.auctionId)
 
   return (
@@ -234,32 +243,50 @@ function App() {
               ) : (
                 currentWinningAuctions.map(auction => (
                   <div key={auction.auctionId} className="item-row">
-                    {auction.itemName || auction.itemId} — ${auction.currentHighestBid} — {auction.auctionStatus}
+                    {auction.itemId} - {auction.itemName || auction.itemId} — ${auction.currentHighestBid} — {auction.auctionStatus}
                   </div>
                 ))
               )}
             </div>
 
-            <div className="list">
-              <h3>Won items</h3>
-              {wonAuctions.length === 0 ? (
-                <p>No won items yet.</p>
-              ) : (
-              wonAuctions.map(auction => {
-                const lastBid = auction.bids?.length > 0
-                  ? [...auction.bids].sort((a, b) => new Date(b.bidTimestamp) - new Date(a.bidTimestamp))[0]
-                  : null
-                const lastBidTime = lastBid ? new Date(lastBid.bidTimestamp).toLocaleString() : 'N/A'
+<div className="list">
+  <h3>Won items</h3>
+  {wonAuctions.length === 0 ? (
+    <p>No won items yet.</p>
+  ) : (
+    wonAuctions.map(auction => {
+      const lastBid = auction.bids?.length > 0
+        ? [...auction.bids].sort((a, b) => new Date(b.bidTimestamp) - new Date(a.bidTimestamp))[0]
+        : null
+      const lastBidTime = lastBid ? new Date(lastBid.bidTimestamp).toLocaleString() : 'N/A'
+      const isPaid = auction.paymentStatus === 'paid'
 
-                return (
-                  <div key={auction.auctionId} className="item-row">
-                    {auction.shipmentId || 'No Shipment ID'} - {auction.itemName} — ${auction.currentHighestBid} —{' '}
-                    {auction.shippingStatus || 'Not shipped'} — Winning Bid: {lastBidTime}
-                  </div>
-                )
-              })
-              )}
-            </div>
+      return (
+        <div key={auction.auctionId} className="item-row" style={{ display: 'flex', justifyContent: 'between', alignItems: 'center' }}>
+          <div>
+            {auction.shipmentId || 'No Shipment ID'} - {auction.itemName} — ${auction.currentHighestBid} —{' '}
+            {auction.shippingStatus || 'Not shipped'} — Winning Bid: {lastBidTime}
+            <div><strong>Payment Status:</strong> {auction.paymentStatus || 'unpaid'}</div>
+          </div>
+          
+          {!isPaid && (
+            <button
+              onClick={() =>
+                handlePatch(`/api/auctions/${auction.auctionId}`, {
+                  buyerLogin: user.login,
+                  paymentStatus: 'paid'
+                })
+              }
+              style={{ marginLeft: '10px' }}
+            >
+              Pay for this item
+            </button>
+          )}
+        </div>
+      )
+    })
+  )}
+</div>
 
             <div className="list">
               <h3>Personal Data</h3>
