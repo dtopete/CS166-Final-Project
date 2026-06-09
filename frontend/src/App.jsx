@@ -167,7 +167,7 @@ function App() {
             {form.type === 'bid' && (
               <div className="form-panel">
                 <h3>Place a bid</h3>
-                <p className="hint">Bid ID is assigned automatically.</p>
+                <p className="hint"> Bidding on: {form.auctionId}  </p>
                 <label>
                   Amount
                   <input
