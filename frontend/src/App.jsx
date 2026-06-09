@@ -64,6 +64,7 @@ function App() {
     reloadData()
   }
 
+  // --- Derived State Variables ---
   const buyerAuctions = auctions
   const sellerItems = items.filter(item => item.sellerLogin === user.login)
   const sellerAuctions = auctions.filter(auction => auction.sellerLogin === user.login)
@@ -75,6 +76,9 @@ function App() {
     auction => auction.auctionStatus === 'closed' && auction.buyerLogin === user.login
   )
   const currentUserDetails = users.find(u => u.login === user.login) || {}
+  
+  // Find the selected auction details if a user is currently bidding
+  const selectedAuctionForBid = auctions.find(a => a.auctionId === form.auctionId)
 
   return (
     <div className="page">
@@ -130,36 +134,36 @@ function App() {
 
                 return (
                   <div key={auction.auctionId} className="item-row">
-                  <div>
-                    <strong>{auction.auctionId}</strong> — {auction.itemName || auction.itemId}
-                    <div>Seller: {auction.sellerLogin}</div>
-                    <div>Status: {auction.auctionStatus}</div>
-                    <div>Category: {auction.category}</div>
-                    <div>Condition: {auction.itemCondition || 'Unknown'}</div>
-                    {auction.itemDescription && (
-                      <div>Description: {auction.itemDescription}</div>
-                    )}
                     <div>
-                      Current bid: ${auction.currentHighestBid}
-                      {lastBidTime && <span className="hint"> (Last bid: {lastBidTime})</span>}
+                      <strong>{auction.auctionId}</strong> — {auction.itemName || auction.itemId}
+                      <div>Seller: {auction.sellerLogin}</div>
+                      <div>Status: {auction.auctionStatus}</div>
+                      <div>Category: {auction.category}</div>
+                      <div>Condition: {auction.itemCondition || 'Unknown'}</div>
+                      {auction.itemDescription && (
+                        <div>Description: {auction.itemDescription}</div>
+                      )}
+                      <div>
+                        Current bid: ${auction.currentHighestBid}
+                        {lastBidTime && <span className="hint"> (Last bid: {lastBidTime})</span>}
+                      </div>
+                      {auction.auctionStatus === 'closed' && (
+                        <div>Winner: {auction.buyerLogin || 'None'}</div>
+                      )}
+                      {auction.auctionStatus === 'active' && (
+                        <div>Highest Bidder: {auction.buyerLogin || 'None'}</div>
+                      )}
                     </div>
-                    {auction.auctionStatus === 'closed' && (
-                      <div>Winner: {auction.buyerLogin || 'None'}</div>
-                    )}
-                    {auction.auctionStatus === 'active' && (
-                      <div>Highest Bidder: {auction.buyerLogin || 'None'}</div>
+                    {auction.auctionStatus === 'active' ? (
+                      <button
+                        onClick={() => setForm({ type: 'bid', auctionId: auction.auctionId })}
+                      >
+                        Bid on this auction
+                      </button>
+                    ) : (
+                      <div className="hint">Bidding is closed for this auction.</div>
                     )}
                   </div>
-                  {auction.auctionStatus === 'active' ? (
-                    <button
-                      onClick={() => setForm({ type: 'bid', auctionId: auction.auctionId })}
-                    >
-                      Bid on this auction
-                    </button>
-                  ) : (
-                    <div className="hint">Bidding is closed for this auction.</div>
-                  )}
-                </div>
                 )
               })
             )}
@@ -167,7 +171,19 @@ function App() {
             {form.type === 'bid' && (
               <div className="form-panel">
                 <h3>Place a bid</h3>
-                <p className="hint"> Bidding on: {form.auctionId}  </p>
+                <p className="hint">
+                  Bidding on: <strong>{form.auctionId}</strong> 
+                  {selectedAuctionForBid && (
+                    <> — <span>{selectedAuctionForBid.itemName || selectedAuctionForBid.itemId}</span></>
+                  )}
+                </p>
+
+                {selectedAuctionForBid && (
+                  <div style={{ marginBottom: '15px' }}>
+                    <strong>Current Bid:</strong> ${selectedAuctionForBid.currentHighestBid}
+                  </div>
+                )}
+
                 <label>
                   Amount
                   <input
